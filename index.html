@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Hey you 😏</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       text-align: center;
@@ -9,6 +10,10 @@
       margin-top: 100px;
       background: #ffe6e6;
       overflow: hidden;
+    }
+
+    h1 {
+      font-size: 28px;
     }
 
     button {
@@ -26,65 +31,90 @@
     }
 
     .heart {
-  position: absolute;
-  pointer-events: none;
-  animation: floatUp linear forwards;
-}
+      position: absolute;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+    }
 
-@keyframes floatUp {
-  0% {
-    transform: translateY(0) translateX(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(var(--drift));
-    opacity: 0;
-  }
-}.big-celebration {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-  pointer-events: none;
-  animation: popIn 0.6s ease-out, pulse 2s infinite ease-in-out;
-}
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(var(--drift));
+        opacity: 0;
+      }
+    }
 
-#hurray {
-  font-size: 60px;
-  top: 35%;
-  color: #ff2d55;
-}
+    .big-celebration {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      pointer-events: none;
+      animation: popIn 0.6s ease-out, pulse 2s infinite ease-in-out;
+    }
 
-#knewit {
-  font-size: 40px;
-  top: 50%;
-  color: #ff5e78;
-}
+    #hurray {
+      font-size: 60px;
+      top: 35%;
+      color: #ff2d55;
+    }
 
-/* entry animation */
-@keyframes popIn {
-  0% {
-    transform: scale(0.2);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+    #knewit {
+      font-size: 40px;
+      top: 50%;
+      color: #ff5e78;
+    }
 
-/* continuous soft animation */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+    @keyframes popIn {
+      0% {
+        transform: scale(0.2);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── Mobile overrides ── */
+    @media (max-width: 600px) {
+      body {
+        margin-top: 60px;
+      }
+
+      h1 {
+        font-size: 36px;
+        padding: 0 16px;
+      }
+
+      button {
+        padding: 18px 36px;
+        font-size: 28px;
+        margin: 14px;
+        border-radius: 12px;
+      }
+
+      #msg {
+        font-size: 32px;
+      }
+
+      #hurray {
+        font-size: 52px;
+      }
+
+      #knewit {
+        font-size: 36px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -135,12 +165,12 @@ function yesClicked() {
     document.getElementById("knewit").innerHTML = "😍 I knew it ❤️";
   }, 800);
 
-  startHearts(); 
+  startHearts();
 }
 
 const noBtn = document.getElementById("noBtn");
 
-noBtn.addEventListener("mouseover", function() {
+function moveNoBtn() {
   const maxX = window.innerWidth - noBtn.offsetWidth;
   const maxY = window.innerHeight - noBtn.offsetHeight;
 
@@ -150,6 +180,12 @@ noBtn.addEventListener("mouseover", function() {
   noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseover", moveNoBtn);
+noBtn.addEventListener("touchstart", function(e) {
+  e.preventDefault(); // prevent the tap from also firing a click
+  moveNoBtn();
 });
 </script>
 
