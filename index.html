@@ -48,23 +48,26 @@
     }
 
     .big-celebration {
-      position: absolute;
       width: 100%;
       text-align: center;
       font-weight: bold;
       pointer-events: none;
       animation: popIn 0.6s ease-out, pulse 2s infinite ease-in-out;
+      display: none;
+      margin-top: 20px;
+    }
+
+    .big-celebration.visible {
+      display: block;
     }
 
     #hurray {
       font-size: 60px;
-      top: 35%;
       color: #ff2d55;
     }
 
     #knewit {
       font-size: 40px;
-      top: 50%;
       color: #ff5e78;
     }
 
@@ -159,13 +162,20 @@ function startHearts() {
 }
 
 function yesClicked() {
-  document.getElementById("hurray").innerHTML = "🎉 YEAHH HORRAYYY 🎉";
+  document.getElementById("noBtn").style.display = "none";
+
+  const hurray = document.getElementById("hurray");
+  hurray.innerHTML = "🎉 YEAHH HORRAYYY 🎉";
+  hurray.classList.add("visible");
 
   setTimeout(() => {
-    document.getElementById("knewit").innerHTML = "😍 I knew it ❤️";
+    const knewit = document.getElementById("knewit");
+    knewit.innerHTML = "😍 I knew it ❤️";
+    knewit.classList.add("visible");
   }, 800);
 
   startHearts();
+  document.getElementById("noBtn").style.display = "none";
 }
 
 const noBtn = document.getElementById("noBtn");
