@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hey you 😏</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      margin-top: 100px;
+      background: #ffe6e6;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #msg {
+      font-size: 24px;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .heart {
+      position: absolute;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(var(--drift));
+        opacity: 0;
+      }
+    }
+
+    .big-celebration {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      pointer-events: none;
+      animation: popIn 0.6s ease-out, pulse 2s infinite ease-in-out;
+      display: none;
+      margin-top: 20px;
+    }
+
+    .big-celebration.visible {
+      display: block;
+    }
+
+    #hurray {
+      font-size: 60px;
+      color: #ff2d55;
+    }
+
+    #knewit {
+      font-size: 40px;
+      color: #ff5e78;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.2);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── Mobile overrides ── */
+    @media (max-width: 600px) {
+      body {
+        margin-top: 60px;
+      }
+
+      h1 {
+        font-size: 36px;
+        padding: 0 16px;
+      }
+
+      button {
+        padding: 18px 36px;
+        font-size: 28px;
+        margin: 14px;
+        border-radius: 12px;
+      }
+
+      #msg {
+        font-size: 32px;
+      }
+
+      #hurray {
+        font-size: 52px;
+      }
+
+      #knewit {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Asmita, Do you like me? 😏</h1>
+
+<button onclick="yesClicked()">YES ❤️</button>
+<button id="noBtn">NO 😭</button>
+
+<div id="hurray" class="big-celebration"></div>
+<div id="knewit" class="big-celebration"></div>
+<p style="position:fixed; bottom:10px; width:100%; text-align:center; font-size:12px; color:gray;">
+Made with MagicLink Nepal 💖
+</p>
+<script>
+let heartInterval;
+
+function createHeart() {
+  let heart = document.createElement("div");
+  heart.innerHTML = "❤️";
+  heart.className = "heart";
+
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = window.innerHeight + "px";
+
+  const size = Math.random() * 30 + 10;
+  heart.style.fontSize = size + "px";
+
+  const duration = Math.random() * 3 + 2;
+  heart.style.animationDuration = duration + "s";
+
+  const drift = (Math.random() - 0.5) * 150;
+  heart.style.setProperty("--drift", drift + "px");
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, duration * 1000);
+}
+
+function startHearts() {
+  heartInterval = setInterval(createHeart, 300);
+}
+
+function yesClicked() {
+  document.getElementById("noBtn").style.display = "none";
+
+  const hurray = document.getElementById("hurray");
+  hurray.innerHTML = "🎉 YEAHH HORRAYYY 🎉";
+  hurray.classList.add("visible");
+
+  setTimeout(() => {
+    const knewit = document.getElementById("knewit");
+    knewit.innerHTML = "😍 I knew it ❤️";
+    knewit.classList.add("visible");
+  }, 800);
+
+  startHearts();
+  document.getElementById("noBtn").style.display = "none";
+}
+
+const noBtn = document.getElementById("noBtn");
+
+function moveNoBtn() {
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseover", moveNoBtn);
+noBtn.addEventListener("touchstart", function(e) {
+  e.preventDefault(); // prevent the tap from also firing a click
+  moveNoBtn();
+});
+</script>
+
+</body>
+</html>
