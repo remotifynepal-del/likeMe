@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hey you 😏</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      margin-top: 100px;
+      background: #ffe6e6;
+      overflow: hidden;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #msg {
+      font-size: 24px;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .heart {
+  position: absolute;
+  pointer-events: none;
+  animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(var(--drift));
+    opacity: 0;
+  }
+}.big-celebration {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  pointer-events: none;
+  animation: popIn 0.6s ease-out, pulse 2s infinite ease-in-out;
+}
+
+#hurray {
+  font-size: 60px;
+  top: 35%;
+  color: #ff2d55;
+}
+
+#knewit {
+  font-size: 40px;
+  top: 50%;
+  color: #ff5e78;
+}
+
+/* entry animation */
+@keyframes popIn {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* continuous soft animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+  </style>
+</head>
+<body>
+
+<h1>Do you like me? 😏</h1>
+
+<button onclick="yesClicked()">YES ❤️</button>
+<button id="noBtn">NO 😭</button>
+
+<div id="hurray" class="big-celebration"></div>
+<div id="knewit" class="big-celebration"></div>
+
+<script>
+let heartInterval;
+
+function createHeart() {
+  let heart = document.createElement("div");
+  heart.innerHTML = "❤️";
+  heart.className = "heart";
+
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = window.innerHeight + "px";
+
+  const size = Math.random() * 30 + 10;
+  heart.style.fontSize = size + "px";
+
+  const duration = Math.random() * 3 + 2;
+  heart.style.animationDuration = duration + "s";
+
+  const drift = (Math.random() - 0.5) * 150;
+  heart.style.setProperty("--drift", drift + "px");
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, duration * 1000);
+}
+
+function startHearts() {
+  heartInterval = setInterval(createHeart, 300);
+}
+
+function yesClicked() {
+  document.getElementById("hurray").innerHTML = "🎉 YEAHH HORRAYYY 🎉";
+
+  setTimeout(() => {
+    document.getElementById("knewit").innerHTML = "😍 I knew it ❤️";
+  }, 800);
+
+  startHearts(); 
+}
+
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", function() {
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
+</script>
+
+</body>
+</html>
