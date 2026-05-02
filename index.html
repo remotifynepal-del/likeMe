@@ -7,7 +7,7 @@
     body {
       text-align: center;
       font-family: Arial;
-      margin-top: 100px;
+      margin-top: 140px;
       background: #ffe6e6;
       overflow: hidden;
     }
@@ -37,14 +37,8 @@
     }
 
     @keyframes floatUp {
-      0% {
-        transform: translateY(0) translateX(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) translateX(var(--drift));
-        opacity: 0;
-      }
+      0% { transform: translateY(0) translateX(0); opacity: 1; }
+      100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0; }
     }
 
     .big-celebration {
@@ -57,29 +51,14 @@
       margin-top: 20px;
     }
 
-    .big-celebration.visible {
-      display: block;
-    }
+    .big-celebration.visible { display: block; }
 
-    #hurray {
-      font-size: 60px;
-      color: #ff2d55;
-    }
-
-    #knewit {
-      font-size: 40px;
-      color: #ff5e78;
-    }
+    #hurray { font-size: 60px; color: #ff2d55; }
+    #knewit { font-size: 40px; color: #ff5e78; }
 
     @keyframes popIn {
-      0% {
-        transform: scale(0.2);
-        opacity: 0;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      0% { transform: scale(0.2); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     @keyframes pulse {
@@ -88,75 +67,99 @@
       100% { transform: scale(1); }
     }
 
-    /* ── Mobile overrides ── */
+    #lang-toggle {
+      position: fixed;
+      top: 14px;
+      right: 16px;
+      padding: 6px 16px;
+      font-size: 14px;
+      border-radius: 20px;
+      border: 2px solid #ff2d55;
+      background: white;
+      color: #ff2d55;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 999;
+    }
+
     @media (max-width: 600px) {
-      body {
-        margin-top: 60px;
-      }
-
-      h1 {
-        font-size: 36px;
-        padding: 0 16px;
-      }
-
-      button {
-        padding: 18px 36px;
-        font-size: 28px;
-        margin: 14px;
-        border-radius: 12px;
-      }
-
-      #msg {
-        font-size: 32px;
-      }
-
-      #hurray {
-        font-size: 52px;
-      }
-
-      #knewit {
-        font-size: 36px;
-      }
+      body { margin-top: 90px; }
+      h1 { font-size: 36px; padding: 0 16px; }
+      button { padding: 18px 36px; font-size: 28px; margin: 14px; border-radius: 12px; }
+      #msg { font-size: 32px; }
+      #hurray { font-size: 52px; }
+      #knewit { font-size: 36px; }
+      #lang-toggle { font-size: 13px; padding: 6px 12px; top: 8px; right: 10px; }
     }
   </style>
 </head>
 <body>
 
-<h1>Do you like me? 😏</h1>
+<button id="lang-toggle" onclick="toggleLang()">नेपाली 🇳🇵</button>
 
-<button onclick="yesClicked()">YES ❤️</button>
+<h1 id="question">Do you like me? 😏</h1>
+
+<button onclick="yesClicked()" id="yesBtn">YES ❤️</button>
 <button id="noBtn">NO 😭</button>
 
 <div id="hurray" class="big-celebration"></div>
 <div id="knewit" class="big-celebration"></div>
-<p style="position:fixed; bottom:10px; width:100%; text-align:center; font-size:12px; color:gray;">
-Made with MagicLink Nepal 💖
-</p>
+
 <script>
 let heartInterval;
+let lang = "en";
+
+const translations = {
+  en: {
+    question: "Do you like me? 😏",
+    yes: "YES ❤️",
+    no: "NO 😭",
+    hurray: "🎉 YEAHH HORRAYYY 🎉",
+    knewit: "😍 I knew it ❤️",
+    noPrefix: "NO ",
+    toggleBtn: "नेपाली 🇳🇵"
+  },
+  np: {
+    question: "के तिमि मलाइ मन पराउछौ? 😏",
+    yes: "मन पराउछु ❤️",
+    no: "मन पराउँदिन 😭",
+    hurray: "🎉 वाह! साँच्चै मन पराउछौ! 🎉",
+    knewit: "😍 मलाई थाहा थियो! ❤️",
+    noPrefix: "मन पराउँदिन ",
+    toggleBtn: "English 🇬🇧"
+  }
+};
+
+const noEmojis = ["😢", "😭", "😫", "😤", "😡"];
+
+function toggleLang() {
+  lang = lang === "en" ? "np" : "en";
+  const t = translations[lang];
+  document.getElementById("question").textContent = t.question;
+  document.getElementById("yesBtn").textContent = t.yes;
+  document.getElementById("noBtn").textContent = t.no;
+  document.getElementById("lang-toggle").textContent = t.toggleBtn;
+
+  const hurray = document.getElementById("hurray");
+  if (hurray.classList.contains("visible")) hurray.innerHTML = t.hurray;
+  const knewit = document.getElementById("knewit");
+  if (knewit.classList.contains("visible")) knewit.innerHTML = t.knewit;
+}
 
 function createHeart() {
   let heart = document.createElement("div");
   heart.innerHTML = "❤️";
   heart.className = "heart";
-
   heart.style.left = Math.random() * window.innerWidth + "px";
   heart.style.top = window.innerHeight + "px";
-
   const size = Math.random() * 30 + 10;
   heart.style.fontSize = size + "px";
-
   const duration = Math.random() * 3 + 2;
   heart.style.animationDuration = duration + "s";
-
   const drift = (Math.random() - 0.5) * 150;
   heart.style.setProperty("--drift", drift + "px");
-
   document.body.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, duration * 1000);
+  setTimeout(() => heart.remove(), duration * 1000);
 }
 
 function startHearts() {
@@ -164,38 +167,34 @@ function startHearts() {
 }
 
 function yesClicked() {
+  const t = translations[lang];
   document.getElementById("noBtn").style.display = "none";
 
   const hurray = document.getElementById("hurray");
-  hurray.innerHTML = "🎉 YEAHH HORRAYYY 🎉";
+  hurray.innerHTML = t.hurray;
   hurray.classList.add("visible");
 
   setTimeout(() => {
     const knewit = document.getElementById("knewit");
-    knewit.innerHTML = "😍 I knew it ❤️";
+    knewit.innerHTML = t.knewit;
     knewit.classList.add("visible");
   }, 800);
 
   startHearts();
-  document.getElementById("noBtn").style.display = "none";
 }
 
 const noBtn = document.getElementById("noBtn");
-const noEmojis = ["😢", "😭", "😫", "😤", "😡"];
 
 function moveNoBtn() {
   const maxX = window.innerWidth - noBtn.offsetWidth;
   const maxY = window.innerHeight - noBtn.offsetHeight;
-
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
-
   noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-
   const emoji = noEmojis[Math.floor(Math.random() * noEmojis.length)];
-  noBtn.textContent = "NO " + emoji;
+  noBtn.textContent = translations[lang].noPrefix + emoji;
 }
 
 noBtn.addEventListener("mouseover", moveNoBtn);
